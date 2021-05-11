@@ -23,8 +23,23 @@ public class MedicineServiceImpl implements MedicineService{
     
 
     @Override
-    public List<Medicine> getMedicines() {
-        return this.medicineRepository.getMedicines();
+    public List<Medicine> getMedicines(String kw) {
+        return this.medicineRepository.getMedicines(kw);
+    }
+
+    @Override
+    public Medicine getMedicineId(int i) {
+        return this.medicineRepository.getMedicineId(i);
+    }
+
+    @Override
+    public boolean addOrUpdateMedicine(Medicine me) {
+        return this.medicineRepository.addOrUpdateMedicine(me);
+    }
+
+    @Override
+    public boolean deleteMedicine(int medicineId) {
+        return this.medicineRepository.deleteMedicine(medicineId);
     }
     
 }

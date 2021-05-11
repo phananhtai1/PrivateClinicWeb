@@ -13,5 +13,8 @@ import java.util.List;
  * @author Administrator
  */
 public interface MedicineService {
-    List<Medicine> getMedicines(); 
+    List<Medicine> getMedicines(String kw);
+    Medicine getMedicineId(int id);
+    boolean addOrUpdateMedicine(Medicine me);
+    boolean deleteMedicine(int medicineId);
 }

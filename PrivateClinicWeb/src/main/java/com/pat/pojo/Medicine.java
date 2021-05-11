@@ -14,6 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -25,15 +28,25 @@ public class Medicine implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotNull(message = "{addmedi.name.notNullMsg}")
     private String name;
     private String unit;
     private BigDecimal price;
     
     @Column(name = "manufacturing_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date manufacturingDate;
     
     @Column(name = "expiry_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date expiryDate;
+    
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
     
     /**
      * @return the id
