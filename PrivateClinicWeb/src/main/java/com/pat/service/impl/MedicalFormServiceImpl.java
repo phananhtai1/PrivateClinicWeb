@@ -11,6 +11,7 @@ import com.pat.repository.MedicalFormRepository;
 import com.pat.repository.PatientRepository;
 import com.pat.service.MedicalFormService;
 import com.pat.service.PatientService;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,8 @@ public class MedicalFormServiceImpl implements MedicalFormService{
     private MedicalFormRepository medicalFormRepository;
     
     @Override
-    public List<Object[]> getMedicalForms(String kw) {
-        return this.medicalFormRepository.getMedicalForms(kw);
+    public List<Object[]> getMedicalForms(Date fromDate, Date toDate) {
+        return this.medicalFormRepository.getMedicalForms(fromDate, toDate);
     }
 
     @Override
@@ -42,6 +43,21 @@ public class MedicalFormServiceImpl implements MedicalFormService{
     @Override
     public boolean deleteMedicalForm(int medicalFormId) {
         return this.medicalFormRepository.deleteMedicalForm(medicalFormId);
+    }
+
+    @Override
+    public List<Object[]> getInfoPatientByMFId(int id) {
+        return this.medicalFormRepository.getInfoPatientByMFId(id);
+    }
+
+    @Override
+    public List<MedicalForm> getMedicalForm() {
+        return this.medicalFormRepository.getMedicalForm();
+    }
+
+    @Override
+    public List<Object[]> getPatientByDate(Date fd, Date td) {
+        return this.medicalFormRepository.getPatientByDate(fd, td);
     }
     
 }

@@ -23,7 +23,7 @@ public class ApiPatientController {
     @Autowired
     private PatientService patientService;
     
-    @DeleteMapping("/patient/{patientId}")
+    @DeleteMapping("/admin/patient/{patientId}")
     @ResponseStatus(HttpStatus.OK)
     public void deletePatient(@PathVariable(name = "patientId") int patientId){
         this.patientService.deletePatient(patientId);

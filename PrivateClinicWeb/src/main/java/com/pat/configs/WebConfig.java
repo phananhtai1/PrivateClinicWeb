@@ -6,9 +6,15 @@
 package com.pat.configs;
 
 import com.pat.formatter.EmployeeFormatter;
+import com.pat.formatter.MedicalFormFormatter;
 import com.pat.formatter.MedicineFormatter;
 import com.pat.formatter.PatientFormatter;
+import com.pat.formatter.PrescriptionFormatter;
+import com.pat.vadilator.PassValidator;
+import com.pat.vadilator.WebValidator;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -45,6 +51,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("/resources/images/");
+        registry.addResourceHandler("/fonts/**")
+                .addResourceLocations("/resources/fonts/");
         registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
     }
@@ -75,6 +85,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addFormatter(new MedicineFormatter());
         registry.addFormatter(new PatientFormatter());
         registry.addFormatter(new EmployeeFormatter());
+        registry.addFormatter(new MedicalFormFormatter());
+        registry.addFormatter(new PrescriptionFormatter());
     }
     
     @Bean
@@ -83,6 +95,27 @@ public class WebConfig implements WebMvcConfigurer {
         return f;
     }
     
+    @Bean
+    public WebValidator userValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new PassValidator());
+
+        WebValidator validator = new WebValidator();
+        validator.setSpringValidators(springValidators);
+
+        return validator;
+    }
+    
+//    @Bean
+//    public WebValidator medicineValidator() {
+//        Set<Validator> springValidators = new HashSet<>();
+//        springValidators.add(new MedicineValidator());
+//        
+//        WebValidator validator = new WebValidator();
+//        validator.setSpringValidators(springValidators);
+//
+//        return validator;
+//    }
 //    @Bean
 //    public CommonsMultipartResolver multipartResolver() {
 //        CommonsMultipartResolver resolver 
@@ -91,6 +124,5 @@ public class WebConfig implements WebMvcConfigurer {
 //
 //        return resolver;
 //    }
-    
     
 }

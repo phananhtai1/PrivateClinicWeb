@@ -44,7 +44,6 @@ public class MedicineRepositoryImpl implements MedicineRepository {
             String pattern = String.format("%%%s%%", kw);
             Predicate p1 = builder.like(root.get("name").as(String.class), pattern);
             Predicate p2 = builder.like(root.get("unit").as(String.class), pattern);
-
             query = query.where(builder.or(p1, p2));
         }
 
@@ -63,14 +62,14 @@ public class MedicineRepositoryImpl implements MedicineRepository {
     @Transactional
     public boolean addOrUpdateMedicine(Medicine me) {
         Session session = this.sessionFactory.getObject().getCurrentSession();
-        try{
-            if(me.getId() > 0){
+        try {
+            if (me.getId() > 0) {
                 session.update(me);
-            }else{
+            } else {
                 session.save(me);
             }
             return true;
-        }catch(HibernateException ex){
+        } catch (HibernateException ex) {
             ex.printStackTrace();
         }
         return false;
@@ -79,17 +78,15 @@ public class MedicineRepositoryImpl implements MedicineRepository {
     @Override
     @Transactional
     public boolean deleteMedicine(int medicineId) {
-        try{
+        try {
             Session session = this.sessionFactory.getObject().getCurrentSession();
             session.delete(session.get(Medicine.class, medicineId));
-            
+
             return true;
-        }catch(HibernateException ex){
+        } catch (HibernateException ex) {
             ex.printStackTrace();
         }
-        
         return false;
     }
-    
 
 }

@@ -17,6 +17,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -30,14 +34,24 @@ public class Patient implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
+    @Size(min = 4, max = 45, message = "{patient.fullname.error.sizeMsg}")
     private String fullname;
+    
+    @Pattern(regexp = "\\d{10}", message = "{patient.phone.error.invalidMsg}")
     private String phone;
+    
+     @NotEmpty(message = "{patient.address.error.notNullMsg}")
     private String address;
+     
+     
     private String sex;
+    
     
     @Column(name = "birth_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{patient.birthDate.error.notNullMsg}")
     private Date birthDate;
     
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)

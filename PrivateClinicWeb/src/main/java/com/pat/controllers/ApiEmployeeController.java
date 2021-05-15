@@ -23,7 +23,7 @@ public class ApiEmployeeController {
     @Autowired
     private EmployeeService employeeService;
     
-    @DeleteMapping("/employee/{employeeId}")
+    @DeleteMapping("/admin/employee/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteEmployee(@PathVariable(name = "employeeId") int employeeId){
         this.employeeService.deleteEmployee(employeeId);

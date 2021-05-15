@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -30,13 +32,17 @@ public class MedicalForm implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     
     private int id;
+    
+    @NotEmpty(message = "{medicalForm.symptom.error.notNullMsg}")
     private String symptom;
     
     @Column(name = "examination_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{medicalForm.examinationDate.error.notNullMsg}")
     private Date examinationDate;
     
+    @NotEmpty(message = "{medicalForm.diagnostic.error.notNullMsg}")
     private String diagnostic;
     
     @ManyToOne
@@ -46,6 +52,11 @@ public class MedicalForm implements Serializable{
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
+    
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
 
     /**
      * @return the id

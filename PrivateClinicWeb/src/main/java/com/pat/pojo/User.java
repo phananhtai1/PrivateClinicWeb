@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -27,7 +29,9 @@ public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Size(min = 1, max = 45, message = "{user.username.error.sizeMsg}")
     private String username;
+    @NotEmpty(message = "{user.password.error.sizeMsg}")
     private String password;
     
     @Column(name = "user_role")
@@ -38,6 +42,11 @@ public class User implements Serializable{
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
+    
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
 
     /**
      * @return the id

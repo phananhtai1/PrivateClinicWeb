@@ -27,7 +27,7 @@ public class PatientController {
     private PatientService patientService;
     
     
-    @RequestMapping("/patient")
+    @RequestMapping("/admin/patient")
     public String viewPatient(Model model, @RequestParam(name ="kw", required = false) String kw){
         if(kw != null){
             model.addAttribute("patient", this.patientService.getPatients(kw));
@@ -37,24 +37,24 @@ public class PatientController {
         return "patient";
     }
     
-    @RequestMapping("/patient/addPatient")
+    @RequestMapping("/admin/patient/addPatient")
     public String addView(Model model){
         model.addAttribute("addPatient", new Patient());
         return "addPatient";
     }
     
-    @RequestMapping("/patient/updatePatient")
+    @RequestMapping("/admin/patient/updatePatient")
     public String updateView(Model model,
-            @RequestParam(name = "patientId", required = false, defaultValue = "0") int id){
-        if(id > 0){
-            model.addAttribute("updatePatient", this.patientService.getPatientId(id));
+            @RequestParam(name = "patientId", required = false, defaultValue = "0") String id){
+        if(id != null){
+            model.addAttribute("updatePatient", this.patientService.getPatientId(Integer.parseInt(id)));
         }else{
-            return "redirect:/patient";
+            return "redirect:/admin/patient";
         }
         return "updatePatient";
     }
     
-    @PostMapping("/patient/addPatient/add")
+    @PostMapping("/admin/patient/addPatient")
     public String addPatient(Model model,
             @ModelAttribute(value = "addPatient") @Valid Patient pa,
             BindingResult result){
@@ -66,10 +66,10 @@ public class PatientController {
             return "addPatient";
         }
         
-        return "redirect:/patient";
+        return "redirect:/admin/patient";
     }
     
-    @PostMapping("/patient/updatePatient/update")
+    @PostMapping("/admin/patient/updatePatient")
     public String updatePatient(Model model,
             @ModelAttribute(value = "updatePatient") @Valid Patient pa,
             BindingResult result){
@@ -81,7 +81,7 @@ public class PatientController {
             return "updatePatient";
         }
         
-        return "redirect:/patient";
+        return "redirect:/admin/patient";
     }
     
 }

@@ -15,7 +15,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -28,16 +32,25 @@ public class Medicine implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotNull(message = "{addmedi.name.notNullMsg}")
+    
+    @NotEmpty(message = "{medicine.name.error.notNullMsg}")
     private String name;
+    
     private String unit;
+    
+    
+    @Min(value = 20000, message = "{medicine.price.error.minMsg}")
+    @Max(value = 1000000000, message = "{medicine.price.error.maxMsg}")
+    @NotNull(message = "{medicine.price.error.notNullMsg}")
     private BigDecimal price;
     
+    @NotNull(message = "{medicine.manufacturingDate.error.notNullMsg}")
     @Column(name = "manufacturing_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date manufacturingDate;
     
+    @NotNull(message = "{medicine.expiryDate.error.notNullMsg}")
     @Column(name = "expiry_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(javax.persistence.TemporalType.DATE)

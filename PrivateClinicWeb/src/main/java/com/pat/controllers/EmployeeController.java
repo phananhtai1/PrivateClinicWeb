@@ -27,7 +27,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
     
     
-    @RequestMapping("/employee")
+    @RequestMapping("/admin/employee")
     public String viewEmployee(Model model, @RequestParam(name ="kw", required = false) String kw){
         if(kw != null){
             model.addAttribute("employee", this.employeeService.getEmployees(kw));
@@ -37,13 +37,13 @@ public class EmployeeController {
         return "employee";
     }
     
-    @RequestMapping("/employee/addEmployee")
+    @RequestMapping("/admin/employee/addEmployee")
     public String addView(Model model){
         model.addAttribute("addEmployee", new Employee());
         return "addEmployee";
     }
     
-    @RequestMapping("/employee/updateEmployee")
+    @RequestMapping("/admin/employee/updateEmployee")
     public String updateView(Model model,
             @RequestParam(name = "employeeId", required = false, defaultValue = "0") int id){
         if(id > 0){
@@ -54,7 +54,7 @@ public class EmployeeController {
         return "updateEmployee";
     }
     
-    @PostMapping("/employee/addEmployee/add")
+    @PostMapping("/admin/employee/addEmployee")
     public String addEmployee(Model model,
             @ModelAttribute(value = "addEmployee") @Valid Employee pa,
             BindingResult result){
@@ -66,10 +66,10 @@ public class EmployeeController {
             return "addEmployee";
         }
         
-        return "redirect:/employee";
+        return "redirect:/admin/employee";
     }
     
-    @PostMapping("/employee/updateEmployee/update")
+    @PostMapping("/admin/employee/updateEmployee")
     public String updateEmployee(Model model,
             @ModelAttribute(value = "updateEmployee") @Valid Employee pa,
             BindingResult result){
@@ -81,7 +81,7 @@ public class EmployeeController {
             return "updateEmployee";
         }
         
-        return "redirect:/employee";
+        return "redirect:/admin/employee";
     }
     
 }

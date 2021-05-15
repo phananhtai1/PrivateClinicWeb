@@ -37,7 +37,7 @@ public class AppointmentController {
     private SimpleDateFormat simpleDateFormat;
     
     
-    @RequestMapping("/appointment")
+    @RequestMapping("/admin/appointment")
     public String viewAppointment(Model model,
             @RequestParam(name = "fromDate", required = false) String fromDate,
             @RequestParam(name = "toDate", required = false) String toDate) {
@@ -56,14 +56,14 @@ public class AppointmentController {
         return "appointment";
     }
     
-    @RequestMapping("/appointment/addAppointment")
+    @RequestMapping("/admin/appointment/addAppointment")
     public String addView(Model model){
         model.addAttribute("patient", this.patientService.getPatients(""));
         model.addAttribute("addAppointment", new Appointment());
         return "addAppointment";
     }
     
-    @RequestMapping("/appointment/updateAppointment")
+    @RequestMapping("/admin/appointment/updateAppointment")
     public String updateView(Model model,
             @RequestParam(name = "appointmentId", required = false, defaultValue = "0") int id){
         if(id > 0){
@@ -75,7 +75,7 @@ public class AppointmentController {
         return "updateAppointment";
     }
     
-    @PostMapping("/appointment/addAppointment/add")
+    @PostMapping("/admin/appointment/addAppointment")
     public String addAppointment(Model model,
             @ModelAttribute(value = "addAppointment") @Valid Appointment pa,
             BindingResult result){
@@ -89,10 +89,10 @@ public class AppointmentController {
             return "addAppointment";
         }
         
-        return "redirect:/appointment";
+        return "redirect:/admin/appointment";
     }
     
-    @PostMapping("/appointment/updateAppointment/update")
+    @PostMapping("/admin/appointment/updateAppointment")
     public String updateAppointment(Model model,
             @ModelAttribute(value = "updateAppointment") @Valid Appointment pa,
             BindingResult result){
@@ -106,7 +106,7 @@ public class AppointmentController {
             return "updateAppointment";
         }
         
-        return "redirect:/appointment";
+        return "redirect:/admin/appointment";
     }
     
 }

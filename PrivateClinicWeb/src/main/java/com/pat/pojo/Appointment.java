@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -33,8 +35,11 @@ public class Appointment implements Serializable{
     @Column(name = "appointment_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{appointment.appointmentDate.error.notNullMsg}")
     private Date appointmentDate;
     
+    
+    @NotEmpty(message = "{appointment.content.error.notNullMsg}")
     private String content;
     
     @ManyToOne

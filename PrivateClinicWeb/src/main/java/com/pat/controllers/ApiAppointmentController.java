@@ -23,7 +23,7 @@ public class ApiAppointmentController {
     @Autowired
     private AppointmentService appointmentService;
     
-    @DeleteMapping("/appointment/{appointmentId}")
+    @DeleteMapping("/admin/appointment/{appointmentId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAppointment(@PathVariable(name = "appointmentId") int appointmentId){
         this.appointmentService.deleteAppointment(appointmentId);

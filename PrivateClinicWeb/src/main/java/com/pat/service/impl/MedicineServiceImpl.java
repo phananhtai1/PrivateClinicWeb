@@ -41,5 +41,6 @@ public class MedicineServiceImpl implements MedicineService{
     public boolean deleteMedicine(int medicineId) {
         return this.medicineRepository.deleteMedicine(medicineId);
     }
+
     
 }

@@ -10,6 +10,8 @@ import com.pat.pojo.Patient;
 import com.pat.service.EmployeeService;
 import com.pat.service.MedicalFormService;
 import com.pat.service.PatientService;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,39 +38,53 @@ public class MedicalFormController {
 
     @Autowired
     private EmployeeService employeeService;
+    
+    @Autowired
+    private SimpleDateFormat simpleDateFormat;
 
-    @RequestMapping("/medicalForm")
-    public String viewMedicalForm(Model model, @RequestParam(name = "kw", required = false) String kw) {
-        if (kw != null) {
-            List<Object[]> medicalForms = this.medicalFormService.getMedicalForms(kw);
-            model.addAttribute("medicalForm", medicalForms);
-        } else {
-            List<Object[]> medicalForms = this.medicalFormService.getMedicalForms("");
-            model.addAttribute("medicalForm", medicalForms);
+    @RequestMapping("/admin/medicalForm")
+    public String viewMedicalForm(Model model,
+            @RequestParam(name = "fromDate", required = false) String fromDate,
+            @RequestParam(name = "toDate", required = false) String toDate) {
+        Date fr = null, to = null;
+        try {
+            fr = this.simpleDateFormat.parse(fromDate);
+            to = this.simpleDateFormat.parse(toDate);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+            List<Object[]> medicalForms = this.medicalFormService.getMedicalForms(fr, to);
+            model.addAttribute("medicalForm", medicalForms);
         return "medicalForm";
     }
 
-    @RequestMapping("/medicalForm/addMedicalForm")
-    public String addView(Model model) {
-        model.addAttribute("patient", this.patientService.getPatients(""));
+    @RequestMapping("/admin/medicalForm/addMedicalForm")
+    public String addView(Model model,
+            @RequestParam(name = "patientId", required = false, defaultValue = "0") int patientId) {
+        if (patientId > 0) {
+            model.addAttribute("patient", this.patientService.getPatientId(patientId));
+        } else {
+            model.addAttribute("patient", this.patientService.getPatients(""));
+        }
         model.addAttribute("employee", this.employeeService.getEmployees(""));
         model.addAttribute("addMedicalForm", new MedicalForm());
         return "addMedicalForm";
     }
 
-    @RequestMapping("/medicalForm/updateMedicalForm")
+    @RequestMapping("/admin/medicalForm/updateMedicalForm")
     public String updateView(Model model,
             @RequestParam(name = "medicalFormId", required = false, defaultValue = "0") int id) {
         if (id > 0) {
+            model.addAttribute("patient", this.patientService.getPatients(""));
+            model.addAttribute("employee", this.employeeService.getEmployees(""));
             model.addAttribute("updateMedicalForm", this.medicalFormService.getMedicalFormId(id));
         } else {
-            return "redirect:/medicalForm";
+            return "redirect:/admin/medicalForm";
         }
         return "updateMedicalForm";
     }
 
-    @PostMapping("/medicalForm/addMedicalForm/add")
+    @PostMapping("/admin/medicalForm/addMedicalForm")
     public String addMedicalForm(Model model,
             @ModelAttribute(value = "addMedicalForm") @Valid MedicalForm pa,
             BindingResult result) {
@@ -84,22 +100,26 @@ public class MedicalFormController {
             return "addMedicalForm";
         }
 
-        return "redirect:/medicalForm";
+        return "redirect:/admin/medicalForm";
     }
 
-    @PostMapping("/medicalForm/updateMedicalForm/update")
+    @PostMapping("/admin/medicalForm/updateMedicalForm")
     public String updateMedicalForm(Model model,
             @ModelAttribute(value = "updateMedicalForm") @Valid MedicalForm pa,
             BindingResult result) {
         if (result.hasErrors()) {
+            model.addAttribute("patient", this.patientService.getPatients(""));
+            model.addAttribute("employee", this.employeeService.getEmployees(""));
             return "updateMedicalForm";
         }
         if (!this.medicalFormService.addOrUpdateMedicalForm(pa)) {
             model.addAttribute("erroMsg", "Something Wrong!!!");
+            model.addAttribute("patient", this.patientService.getPatients(""));
+            model.addAttribute("employee", this.employeeService.getEmployees(""));
             return "updateMedicalForm";
         }
 
-        return "redirect:/medicalForm";
+        return "redirect:/admin/medicalForm";
     }
 
 }

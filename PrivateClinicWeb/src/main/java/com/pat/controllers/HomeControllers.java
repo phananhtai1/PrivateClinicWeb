@@ -22,4 +22,9 @@ public class HomeControllers {
 
         return "index";
     }
+    @RequestMapping("/admin") //mapping vao trang chu
+    public String indexAdmin(Model model){
+
+        return "indexAdmin";
+    }
 }
